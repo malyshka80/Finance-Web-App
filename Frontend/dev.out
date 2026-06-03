@@ -1,0 +1,5 @@
+
+> pfa-frontend@1.0.0 dev
+> vite --force --host 127.0.0.1 --port 5176 --strictPort
+
+[2m9:53:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Forced re-optimization of dependencies

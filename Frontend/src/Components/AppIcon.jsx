@@ -1,0 +1,86 @@
+import {
+  AlertTriangle,
+  BadgeDollarSign,
+  BarChart3,
+  Bot,
+  Briefcase,
+  Building2,
+  CalendarDays,
+  Check,
+  CheckCircle2,
+  CheckSquare,
+  Circle,
+  CircleX,
+  Gift,
+  Gem,
+  HeartPulse,
+  Home,
+  Info,
+  Lightbulb,
+  Package,
+  PiggyBank,
+  Plus,
+  Receipt,
+  RotateCcw,
+  SendHorizontal,
+  Shirt,
+  ShoppingCart,
+  Sparkles,
+  Target,
+  Trash2,
+  Wallet,
+  X,
+} from 'lucide-react'
+
+const ICONS = {
+  logo: Gem,
+  dashboard: Home,
+  wallet: Wallet,
+  depenses: Receipt,
+  objectifs: Target,
+  taches: CheckSquare,
+  stats: BarChart3,
+  assistant: Bot,
+
+  factures: Lightbulb,
+  nourriture: ShoppingCart,
+  vetements: Shirt,
+  enfants: Sparkles,
+  loisirs: Sparkles,
+  sante: HeartPulse,
+  transport: Building2,
+  autres: Package,
+
+  revenu: Briefcase,
+  bonus: BadgeDollarSign,
+  cadeau: Gift,
+  autre: Package,
+  epargne: PiggyBank,
+  envoi: SendHorizontal,
+  reception: Wallet,
+
+  success: CheckCircle2,
+  error: CircleX,
+  info: Info,
+  alert: AlertTriangle,
+
+  check: Check,
+  plus: Plus,
+  close: X,
+  refresh: RotateCcw,
+  calendar: CalendarDays,
+  trash: Trash2,
+  money: BadgeDollarSign,
+}
+
+export default function AppIcon({
+  name,
+  size = 16,
+  color = 'currentColor',
+  strokeWidth = 1.9,
+  style,
+}) {
+  const Icon = ICONS[name] || Circle
+  return <Icon size={size} color={color} strokeWidth={strokeWidth} style={style} />
+}
+
