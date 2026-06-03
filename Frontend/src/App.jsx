@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import './App.css'
 
 // Pages
+import AdminPage from './Pages/AdminPage'
 import Dashboard   from './Pages/Dashboard'
 import Depenses    from './Pages/Depenses'
 import Objectifs   from './Pages/Objectifs'
@@ -76,6 +77,7 @@ export default function App() {
                   <Route path="/taches"     element={<Taches />}     />
                   <Route path="/wallet"     element={<Wallet />}     />
                   <Route path="/assistant"  element={<AIAssistant />} />
+                  <Route path="/admin"      element={<AdminPage/>} />
                   {/* Fallback: redirect unknown routes to dashboard */}
                   <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>

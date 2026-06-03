@@ -28,6 +28,7 @@ const formatUser = (u) => ({
   nom:            `${u.first_name} ${u.last_name}`,
   prenom:         u.first_name,
   email:          u.email,
+  role:           u.role || 'user',
   revenu_mensuel: parseFloat(u.monthly_income || 0),
   devise:         u.currency || 'TND',
   langue:         u.language || 'fr',

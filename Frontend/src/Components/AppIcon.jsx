@@ -30,6 +30,7 @@ import {
   Trash2,
   Wallet,
   X,
+  Shield,
 } from 'lucide-react'
 
 const ICONS = {
@@ -41,6 +42,7 @@ const ICONS = {
   taches: CheckSquare,
   stats: BarChart3,
   assistant: Bot,
+  admin: Shield,
 
   factures: Lightbulb,
   nourriture: ShoppingCart,

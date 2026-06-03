@@ -4,9 +4,9 @@ import { useApp } from '../Context/AppContext'
 import { useTheme } from '../Context/ThemeContext'
 import { useAuth } from '../Context/AuthContext'
 import { useState } from 'react'
-import { Home, Wallet, Receipt, Target, CheckSquare, BarChart3, Bot, Coins, LogOut, Moon, Sun, Sparkles } from 'lucide-react'
+import { Home, Wallet, Receipt, Target, CheckSquare, BarChart3, Bot, Coins, LogOut, Moon, Sun, Sparkles, Icon, Shield } from 'lucide-react'
 
-const NAV_ITEMS = [
+const BASE_NAV_ITEMS = [
   { path: '/dashboard', label: 'Tableau de bord', Icon: Home },
   { path: '/wallet', label: 'Portefeuille', Icon: Wallet },
   { path: '/depenses', label: 'Dépenses', Icon: Receipt },
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { path: '/taches', label: 'Tâches', Icon: CheckSquare },
   { path: '/stats', label: 'Statistiques', Icon: BarChart3 },
   { path: '/assistant', label: 'Assistant IA', Icon: Bot },
+  { path: '/admin', label: 'Administrateur', Icon: Shield},
 ]
 
 export default function Sidebar() {
@@ -22,6 +23,7 @@ export default function Sidebar() {
   const { logout } = useAuth()
   const navigate = useNavigate()
   const [loggingOut, setLoggingOut] = useState(false)
+  const {user: authUser} = useAuth()
 
   const handleLogout = async () => {
     setLoggingOut(true)
@@ -66,7 +68,7 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar-nav" aria-label="Navigation principale">
-        {NAV_ITEMS.map(({ path, label, Icon }, index) => (
+        {BASE_NAV_ITEMS.map(({ path, label, Icon }, index) => (
           <NavLink
             key={path}
             to={path}
