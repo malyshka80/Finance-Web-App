@@ -33,7 +33,7 @@ export function useApi() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`/api${url}`)
+      const res = await fetch(`${import.meta.env.VITE_API_URL}${url}`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       return await res.json()
     } catch (err) {
