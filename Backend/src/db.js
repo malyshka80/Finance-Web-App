@@ -8,16 +8,16 @@
 // ============================================================
 
 const { Pool } = require('pg');
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Les variables d'environnement sont lues depuis un fichier
 // .env (géré par dotenv) pour ne jamais mettre le mot de
 // passe en dur dans le code.
 const pool = new Pool({
-  user:     process.env.DB_USER     || 'postgres',
-  host:     process.env.DB_HOST     || 'localhost',
-  database: process.env.DB_NAME     || 'financeapp',
-  password: process.env.DB_PASSWORD || 'password',
-  port:     process.env.DB_PORT     || 5432,
+  connectionString: process.env.DATABASE_URL, // Heroku fournit cette variable automatiquement
+  ssl:
+     process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false, 
 });
 
 // On exporte le pool pour l'utiliser dans tous les fichiers
