@@ -8,7 +8,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 
 const AuthContext = createContext(null);
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://finance-web-app-backend.onrender.com';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://finance-web-app-backend-al6j.onrender.com';
 
 // ── Token helpers (localStorage) ─────────────────────────────
 
