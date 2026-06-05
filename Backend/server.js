@@ -12,7 +12,7 @@ const adminRoutes     = require('./src/routes/admin');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://finance-web-app-frontend.onrender.com' }));
 app.use(express.json());
 
 app.use('/api/auth',      authRoutes);
