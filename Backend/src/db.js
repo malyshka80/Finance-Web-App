@@ -8,8 +8,8 @@
 // ============================================================
 
 const { Pool } = require('pg');
-import dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config();
+
 
 // Les variables d'environnement sont lues depuis un fichier
 // .env (géré par dotenv) pour ne jamais mettre le mot de
