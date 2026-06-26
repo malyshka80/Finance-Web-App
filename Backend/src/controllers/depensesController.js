@@ -1,5 +1,24 @@
 const pool = require('../db');
 
+const CATEGORY_ORDER = [
+  'Factures',
+  'Nourriture',
+  'Vêtements',
+  'Enfants',
+  'Loisirs',
+  'Transport',
+  'Santé',
+  'Éducation',
+  'Autre',
+];
+
+const normalizeFrenchText = (value = '') =>
+  value
+    .replaceAll('VÃªtements', 'Vêtements')
+    .replaceAll('SantÃ©', 'Santé')
+    .replaceAll('Ã‰ducation', 'Éducation')
+    .replaceAll('DÃ©pense', 'Dépense');
+
 // GET /api/depenses/:userId?mois=4&annee=2025
 const getDepenses = async (req, res) => {
   try {
@@ -34,6 +53,7 @@ const getDepenses = async (req, res) => {
     res.json(result.rows.map(r => ({
       ...r,
       montant: parseFloat(r.montant),
+      categorie_nom: normalizeFrenchText(r.categorie_nom),
     })));
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -85,7 +105,13 @@ const ajouterDepense = async (req, res) => {
       [depense.rows[0].id]
     );
 
-    res.json({ success: true, depense: enriched.rows[0] });
+    res.json({
+      success: true,
+      depense: {
+        ...enriched.rows[0],
+        categorie_nom: normalizeFrenchText(enriched.rows[0].categorie_nom),
+      },
+    });
   } catch (err) {
     await client.query('ROLLBACK');
     res.status(500).json({ error: err.message });
@@ -110,9 +136,30 @@ const getCategories = async (req, res) => {
     const result = await pool.query(
       `SELECT id, name AS nom, icon AS icone, color AS couleur, is_default
        FROM expense_categories
-       ORDER BY name`
+       ORDER BY is_default DESC, name, created_at`
     );
-    res.json(result.rows);
+    const categoriesByName = new Map();
+
+    result.rows.forEach((row) => {
+      const nom = normalizeFrenchText(row.nom);
+      const key = nom.toLocaleLowerCase('fr-FR');
+      if (!categoriesByName.has(key)) {
+        categoriesByName.set(key, { ...row, nom });
+      }
+    });
+
+    const categories = [...categoriesByName.values()].sort((a, b) => {
+      const aIndex = CATEGORY_ORDER.indexOf(a.nom);
+      const bIndex = CATEGORY_ORDER.indexOf(b.nom);
+      if (aIndex !== -1 || bIndex !== -1) {
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+        return aIndex - bIndex;
+      }
+      return a.nom.localeCompare(b.nom, 'fr-FR');
+    });
+
+    res.json(categories);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

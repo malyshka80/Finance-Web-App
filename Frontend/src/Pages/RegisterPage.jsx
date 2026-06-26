@@ -29,6 +29,41 @@ const labelStyle = {
 
 const errStyle = { fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: 11, color: '#f87171', marginTop: 4 };
 
+function Field({ name, label, type = 'text', placeholder = '', value, error, onValueChange }) {
+  return (
+    <div>
+      <label style={labelStyle}>{label}</label>
+      <input
+        name={name}
+        type={type}
+        value={value}
+        onChange={e => onValueChange(e.target.value)}
+        placeholder={placeholder}
+        style={inputStyle(!!error)}
+      />
+      {error && <p style={errStyle}>{error}</p>}
+    </div>
+  );
+}
+
+function SelectField({ name, label, options, value, error, onValueChange }) {
+  return (
+    <div>
+      <label style={labelStyle}>{label}</label>
+      <select
+        name={name}
+        value={value}
+        onChange={e => onValueChange(e.target.value)}
+        style={inputStyle(!!error)}
+      >
+        <option value="">— Choisir —</option>
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+      {error && <p style={errStyle}>{error}</p>}
+    </div>
+  );
+}
+
 export default function RegisterPage() {
   const { register } = useAuth();
   const navigate      = useNavigate();
@@ -82,26 +117,6 @@ export default function RegisterPage() {
       toast.error(err.response?.data?.error || 'Erreur lors de la création du compte');
     } finally { setLoading(false); }
   };
-
-  const Field = ({ k, label, type = 'text', placeholder = '' }) => (
-    <div>
-      <label style={labelStyle}>{label}</label>
-      <input type={type} value={form[k]} onChange={e => set(k, e.target.value)}
-        placeholder={placeholder} style={inputStyle(!!errors[k])} />
-      {errors[k] && <p style={errStyle}>{errors[k]}</p>}
-    </div>
-  );
-
-  const Select = ({ k, label, options }) => (
-    <div>
-      <label style={labelStyle}>{label}</label>
-      <select value={form[k]} onChange={e => set(k, e.target.value)} style={inputStyle(!!errors[k])}>
-        <option value="">— Choisir —</option>
-        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-      {errors[k] && <p style={errStyle}>{errors[k]}</p>}
-    </div>
-  );
 
   return (
     <div style={{
@@ -176,10 +191,10 @@ export default function RegisterPage() {
             >
               {step === 0 && <>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  <Field k="first_name" label="Prénom" placeholder="Jean" />
-                  <Field k="last_name"  label="Nom"    placeholder="Dupont" />
+                  <Field name="first_name" label="Prénom" placeholder="Jean" value={form.first_name} error={errors.first_name} onValueChange={value => set('first_name', value)} />
+                  <Field name="last_name"  label="Nom"    placeholder="Dupont" value={form.last_name} error={errors.last_name} onValueChange={value => set('last_name', value)} />
                 </div>
-                <Field k="email" label="Email" type="email" placeholder="vous@exemple.com" />
+                <Field name="email" label="Email" type="email" placeholder="vous@exemple.com" value={form.email} error={errors.email} onValueChange={value => set('email', value)} />
                 <div>
                   <label style={labelStyle}>Mot de passe</label>
                   <div style={{ position: 'relative' }}>
@@ -196,14 +211,14 @@ export default function RegisterPage() {
               </>}
 
               {step === 1 && <>
-                <Select k="professional_status" label="Situation professionnelle" options={[
+                <SelectField name="professional_status" label="Situation professionnelle" value={form.professional_status} error={errors.professional_status} onValueChange={value => set('professional_status', value)} options={[
                   { value: 'student', label: 'Étudiant(e)' },
                   { value: 'employed', label: 'Salarié(e)' },
                   { value: 'self_employed', label: 'Indépendant(e)' },
                   { value: 'unemployed', label: 'Sans emploi' },
                   { value: 'retired', label: 'Retraité(e)' },
                 ]} />
-                <Select k="family_status" label="Situation familiale" options={[
+                <SelectField name="family_status" label="Situation familiale" value={form.family_status} error={errors.family_status} onValueChange={value => set('family_status', value)} options={[
                   { value: 'single', label: 'Célibataire' },
                   { value: 'married', label: 'Marié(e)' },
                   { value: 'divorced', label: 'Divorcé(e)' },
@@ -227,7 +242,7 @@ export default function RegisterPage() {
                     ))}
                   </div>
                 </div>
-                {form.has_children && <Field k="children_count" label="Nombre d'enfants" type="number" placeholder="2" />}
+                {form.has_children && <Field name="children_count" label="Nombre d'enfants" type="number" placeholder="2" value={form.children_count} error={errors.children_count} onValueChange={value => set('children_count', value)} />}
               </>}
 
               {step === 2 && <>
@@ -241,7 +256,7 @@ export default function RegisterPage() {
                     Utilisé comme solde initial de votre portefeuille.
                   </p>
                 </div>
-                <Select k="currency" label="Devise" options={[
+                <SelectField name="currency" label="Devise" value={form.currency} error={errors.currency} onValueChange={value => set('currency', value)} options={[
                   { value: 'TND', label: 'Dinar Tunisien (TND)' },
             
                   
